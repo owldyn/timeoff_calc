@@ -72,13 +72,9 @@ class PTOAccruement:
         """PTO accrual handler.
 
         Args:
-            period_length (List[int]): A list of the lengths of each period
-            start_date (List[datetime.date]): The start date of each period.
-            end_date (List[datetime.date]): _description_
-            accruement (List[float]): _description_
-            starting_pto (float, optional): _description_. Defaults to 0.
-            starting_day (datetime.date, optional): _description_. Defaults to date.today().
-
+            periods (List[AccruementPeriod]): a list of classs containing the period data
+            starting_pto (float, optional): PTO to start with. Defaults to 0.
+            starting_day (datetime.date, optional): The day to start the period on. Defaults to date.today().
         Raises:
             ValueError: _description_
         """
