@@ -1,19 +1,17 @@
 import datetime
 from typing import List, Tuple
+from dataclasses import dataclass
 
-
+@dataclass
 class PayPeriod:
-    """Holder for information about a pay period"""
-
-    def __init__(self, hours_per_period: float, period_length: int = 14) -> None:
-        """Generates a pay period.
+    """Generates a pay period.
 
         Args:
             hours_per_period (float): the amount of hours you get in PTO per period
             period_length (int, Optional): the length in days a payperiod is. Default 14 for every other week.
-        """
-        self.pto_accruement = hours_per_period
-        self.period_length = period_length
+    """
+    hours_per_period: float
+    period_length: int = 14
 
     def add_pto(self, current_pto: float, current_date: datetime.date) -> Tuple[float, datetime.date]:
         """Adds the accruement of PTO for a pay period
@@ -26,17 +24,20 @@ class PayPeriod:
                 float: the pto added
                 date: the end date of the pay period
         """
-        current_pto += self.pto_accruement
+        current_pto += self.hours_per_period
         current_date += datetime.timedelta(days=self.period_length)
         return (current_pto, current_date)
 
-
+@dataclass
 class Vacation:
-    """Class to use for information about a vacation"""
+    """Class to use for information about a vacation
 
-    def __init__(self, start_date: datetime.date, hours_length: float) -> None:
-        self.start_date = start_date
-        self.length = hours_length
+    Args:
+        start_date (date): The date the vacation starts
+        length (float): The amount of PTO hours the vacation will use
+    """
+    start_date: datetime.date
+    length: float
 
     def __lt__(self, other):
         if isinstance(other, Vacation):
@@ -46,18 +47,20 @@ class Vacation:
         raise TypeError(
             f"'<' not supported between instances of Vacation and {type(other)}")
 
-
+@dataclass
 class AccruementPeriod:
-    """Type for PTOAccruement to hold the information of each period"""
-
-    def __init__(self, period_length: int,
-                 start_date: datetime.date,
-                 end_date: datetime.date,
-                 accruement: float,) -> None:
-        self.period_length = period_length
-        self.start_date = start_date
-        self.end_date = end_date
-        self.accruement = accruement
+    """Type for PTOAccruement to hold the information of each period
+    
+    Args:
+        period_length (int): The length of the period in days
+        start_date (date): the date the period starts
+        end_date (date): the date the period ends
+        accruement (float): The amount of pto to accrue during the period
+    """
+    period_length: int
+    start_date: datetime.date
+    end_date: datetime.date
+    accruement: float
 
 
 class PTOAccruement:
